@@ -32,6 +32,7 @@ for jj=1:10
 	disp(['Iteration non_target: ' num2str(jj) ' for ' num2str(jj) ' Total log-likelihood: ' num2str(TTL_n)])
 end
 
+%apriorni pravdepodobnost
 p_t=0.5;
 p_n=0.5;
 
@@ -51,6 +52,15 @@ sum_target=sum(score_t>1)/length(score_t)
 sum_non=sum(score_n<0)/length(score_n)
 
 f=fopen('result.txt', 'at');
+	
+	for ii=1:length(target_test)
+		[pathstr, name, ext]=fileparts(file1{ii});
+		fprintf(f, '%s %s\n //Target', name, score_t(ii)/1000);
+	end
 
+	for ii=1:length(non_test)
+		[pathstr, name, ext]=fileparts(file2{ii});
+		fprintf(f, '%s %s\n //Non_Target', name, score_n(ii)/1000);
+	end
 
 fclose(f);
