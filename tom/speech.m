@@ -1,5 +1,5 @@
  
-%Nacteni dat a odstraneni ticha
+% nacteni dat a odstraneni ticha
 addpath('lib');
 
 target_train=wav16khz2mfcc_delete_silence('target_train');
@@ -10,21 +10,21 @@ non_train=wav16khz2mfcc_delete_silence('non_target_train');
 target_train=cell2mat(target_train);
 non_train=cell2mat(non_train);
 
-%pocet gaussovek
-M=64
+% pocet gaussovek
+M=64;
 
-%inicializace pro target
+% inicializace pro target
 MUs=target_train(:, random('unid', size(target_train, 2), 1, M));
 COVs = repmat(var((target_train)', 1)', 1, M);
 Ws = ones(1,M) / M;
 
-%inicializace pro non_target
+% inicializace pro non_target
 MUs_n=non_train(:, random('unid', size(non_train, 2), 1, M));
 COVs_n = repmat(var((non_train)', 1)', 1, M);
 Ws_n = ones(1,M) / M;
 
 
-%natrenujeme GMM, 10 iteraci 
+% natrenujeme GMM, 10 iteraci 
 for jj=1:10
 	[Ws, MUs, COVs, TTL_t] = train_gmm(target_train, Ws, MUs, COVs);
 	[Ws_n, MUs_n, COVs_n, TTL_n] = train_gmm(non_train, Ws_n, MUs_n, COVs_n);
@@ -32,9 +32,9 @@ for jj=1:10
 	disp(['Iteration non_target: ' num2str(jj) ' for ' num2str(jj) ' Total log-likelihood: ' num2str(TTL_n)])
 end
 
-%apriorni pravdepodobnost
-p_t=0.5;
-p_n=0.5;
+% apriorni pravdepodobnost
+p_t = 0.5;
+p_n = 1 - p_t;
 
 for ii=1:length(target_test)
 	ll_t = logpdf_gmm(target_test{ii}, Ws, MUs, COVs);
@@ -53,14 +53,18 @@ sum_non=sum(score_n<0)/length(score_n)
 
 f=fopen('result.txt', 'at');
 	
+% vymazat pri vypisu target a non_target
+
 	for ii=1:length(target_test)
 		[pathstr, name, ext]=fileparts(file1{ii});
-		fprintf(f, '%s %s\n //Target', name, score_t(ii)/1000);
+		tmpScore = score_t(ii)/1000;
+		fprintf(f, '%s %0.4f %d\n', name, tmpScore, tmpScore > 0);
 	end
 
 	for ii=1:length(non_test)
 		[pathstr, name, ext]=fileparts(file2{ii});
-		fprintf(f, '%s %s\n //Non_Target', name, score_n(ii)/1000);
+		tmpScore = score_n(ii)/1000;
+		fprintf(f, '%s %0.4f %d\n', name, tmpScore, tmpScore > 0);
 	end
 
 fclose(f);
