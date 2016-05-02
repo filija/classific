@@ -7,4 +7,5 @@
 - vysledkem jsou 2 soubory: result_audio.txt a result_image.txt v korenovem adresari odevzdaneho zipu
 - vysledky ziskame pouhym spustenim souboru speech.m a img.m v MATLABU (v adresari SRC/)
 
-- problem, ktery muze nastat se tyka nacitani audia (funkce wavread -> audioread)
+- skripty byly uspesne otestovany na serveru merlin
+- problem, ktery muze nastat u jine verze matlabu se tyka nacitani audia (funkce wavread -> audioread)
