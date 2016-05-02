@@ -53,7 +53,7 @@ sum_target=sum(score_t>1)/length(score_t)
 sum_non=sum(score_n<0)/length(score_n)
 
 % output
-f=fopen('result_audio.txt', 'w');
+f=fopen('../result_audio.txt', 'w');
 
 	for ii=1:length(target_test)
 		[pathstr, name, ext]=fileparts(file1{ii});
