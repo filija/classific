@@ -22,7 +22,7 @@ for ii=1:length(non_train)
 end
 
 % rewrite output file
-f = fopen('result_image.txt', 'w');
+f = fopen('../result_image.txt', 'w');
 
 test_set = non_test;
 
